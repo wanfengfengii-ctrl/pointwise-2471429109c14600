@@ -21,6 +21,8 @@ python3 -B workday.py
 | 接纳批次 | `ingest.batches.accept_batch(db, BatchSubmission(source, batch_id, observations))` | `Observation(RevisionKey(source, record, revision), value)` 的有序序列。返回原序修订身份和本次新增数。 |
 | 封存包 | `packing.seal.seal_pack(db, pack_id, selections)` | 全值用 `SealSelection(revision)`，差量用 `SealSelection(revision, PackAddress(pack_id, slot), prefix)`。返回包位序列和封存字节数。 |
 | 发布快照 | `snapshot.publish.publish_snapshot(db, snapshot_id, addresses)` | 按给定地址序列返回原清单字节和发布回执。同号同序可重领。 |
+| 双机房发布 | `snapshot.publish.publish_room_snapshot(db, snapshot_id, addresses, room_candidates)` | 两房各用本房候选都能还原整份原清单才签发，返回清单、认证证据字节和回执。同号同参可重领，改绑拒绝。口径见 ROOM_READ.md。 |
+| 单房冷读 | `reading.open.read_room_snapshot(db, snapshot_id, room, fetch_pack)` | 凭已签发认证和指定房端口交付的实到包件读回整份清单，逐位置给出原修订、字节和实际包位链。 |
 | 核账 | `reading.open.read_snapshot(db, selector)` | `selector` 为快照号或保存的原始清单 `bytes`。返回逐位置的包位、修订身份、原始字节和长度。`open_snapshot` 可单独取得登记的清单结构。 |
 | 退役 | `maintenance.retire.retire_pack(db, pack_id)` | 退役一个活动包，返回持久回执，含移除的封存字节数及保全的包位数。可用 `maintenance.receipts.load_retirement_receipt` 重领，`maintenance.active.list_active_packs` 核对活动包。 |
 

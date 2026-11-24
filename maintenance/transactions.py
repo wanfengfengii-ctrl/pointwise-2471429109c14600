@@ -10,6 +10,7 @@ from maintenance.replacement import create_replacement_schema
 from packing.store import create_pack_schema
 from snapshot.catalog import create_snapshot_schema
 from snapshot.receipts import create_publication_receipt_schema
+from snapshot.room_catalog import create_room_schema
 
 
 def open_database(path: str | PathLike[str]) -> sqlite3.Connection:
@@ -49,5 +50,6 @@ def initialize_database(db: sqlite3.Connection) -> None:
         create_pack_schema(db)
         create_snapshot_schema(db)
         create_publication_receipt_schema(db)
+        create_room_schema(db)
         create_replacement_schema(db)
         create_retirement_receipt_schema(db)
